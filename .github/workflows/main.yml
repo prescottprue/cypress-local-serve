@@ -47,6 +47,7 @@ jobs:
           # TODO: Look into if this can be moved to an npm script
           TZ: America/Los_Angeles
           CI: true
+          CYPRESS_baseUrl: http://localhost:3000 
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
