@@ -1,0 +1,49 @@
+{
+  "name": "cypress-local-serve",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "test": "npm run test:open",
+    "seed": "scripts/seeddb.js",
+    "serve": "firebase serve --only hosting -p 3000",
+    "emulate": "firebase emulators:start --only hosting",
+    "emulators": "firebase emulators:start --only firestore,database",
+    "test:emulate": "cross-env FIREBASE_DATABASE_EMULATOR_HOST=\"localhost:$(cat firebase.json | jq .emulators.database.port)\" yarn test:open",
+    "test:run": "cross-env CYPRESS_baseUrl=http://localhost:3000 cypress run",
+    "test:open": "cross-env CYPRESS_baseUrl=http://localhost:3000 cypress open"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "firebase": "^7.8.0",
+    "lodash": "^4.17.15",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.1"
+  },
+  "devDependencies": {
+    "cypress": "^4.0.2",
+    "eslint-plugin-cypress": "^2.9.0",
+    "firebase-admin": "^8.9.2",
+    "firebase-tools": "^7.12.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+name: Test Emulated
+
+on: [push]
+
+jobs:
+
+  ui-tests:
+    name: UI Tests
+    runs-on: ubuntu-16.04
+    env:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.15.3
+
+      - name: Cache Firebase Emulators
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-binaries-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-binaries-
+            ${{ runner.os }}-
+
+      # Cypress action manages installing/caching npm dependencies and Cypress binary.
+      # Because of "record" and "parallel" parameters these containers will load
+      # balance all found tests among themselves. The step tests a version of the app
+      # which is running locally in the container on port 3001
+      - name: Cypress Run
+        uses: cypress-io/github-action@v1
+        with:
+          browser: chrome
+          record: true
+          # parallel: true
+          headless: true
+          group: 'UI Tests'
+          tag: emulated
+          cache-key: ${{ runner.os }}-tests-${{ hashFiles('**/yarn.lock') }}
+          start: npm run serve -- --project redux-firebasev3
+          wait-on: 'http://localhost:3000/'
+          build: npm run build
+          # wait for 2 minutes for the server to respond
+          wait-on-timeout: 120
+        env:
+          # TODO: Look into if this can be moved to an npm script
+          TZ: America/Los_Angeles
+          CI: true
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_KEY }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+          GITHUB_REF: ${{ github.ref }}
