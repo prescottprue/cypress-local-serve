@@ -35,12 +35,9 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           browser: chrome
-          record: true
+          # record: true
           # parallel: true
           headless: true
-          group: 'UI Tests'
-          tag: emulated
-          cache-key: ${{ runner.os }}-tests-${{ hashFiles('**/yarn.lock') }}
           start: yarn newserve
           wait-on: 'http://localhost:3000/'
           build: npm run build
