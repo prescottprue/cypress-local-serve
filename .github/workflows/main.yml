@@ -41,7 +41,7 @@ jobs:
           group: 'UI Tests'
           tag: emulated
           cache-key: ${{ runner.os }}-tests-${{ hashFiles('**/yarn.lock') }}
-          start: npm run serve -- --project redux-firebasev3
+          start: yarn newserve
           wait-on: 'http://localhost:3000/'
           build: npm run build
           # wait for 2 minutes for the server to respond

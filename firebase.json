@@ -1,4 +1,21 @@
 {
+  "hosting": [
+    {
+      "target": "app",
+      "public": "build",
+      "ignore": [
+        "**/node_modules/**",
+        "src",
+        "scripts"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ],
   "emulators": {
     "functions": {
       "port": 5001
